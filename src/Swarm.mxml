@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" applicationComplete="onApplicationComplete(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.craigphares.experiments.swarm.SwarmMain;
+			
+			import mx.events.FlexEvent;
+			
+			public var swarm:SwarmMain;
+			
+			protected function onApplicationComplete(event:FlexEvent):void
+			{
+				swarm = new SwarmMain();
+				view.addChild(swarm);	
+			}
+			
+			protected function onStepClick(event:MouseEvent):void
+			{
+				swarm.step();
+			}
+		]]>
+	</fx:Script>
+	<mx:UIComponent id="view" width="640" height="480" horizontalCenter="0" verticalCenter="0" />
+	
+	<s:Button label="step" click="onStepClick(event)" />
+	
+</s:Application>
