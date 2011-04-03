@@ -78,9 +78,15 @@ package com.craigphares.experiments.swarm
 			leader.move();
 			
 			// check leader boundaries
-			if (leader.pos.x < 0 || leader.pos.y < 0 || leader.pos.x > screenWidth || leader.pos.y > screenHeight) {
-				leader.dir += 180;
-				leader.findTarget();
+			if (leader.pos.x < 0 || leader.pos.x > screenWidth) {
+				//if (leader.pos.x < 0) leader.pos.x = 0;
+				//if (leader.pos.x > screenWidth) leader.pos.x = screenWidth;
+				leader.reflectHorizontal();
+			}
+			if (leader.pos.y < 0 || leader.pos.y > screenHeight) {
+				//if (leader.pos.y < 0) leader.pos.y = 0;
+				//if (leader.pos.y > screenHeight) leader.pos.y = screenHeight;
+				leader.reflectVertical();
 			}
 			
 			// draw leader
