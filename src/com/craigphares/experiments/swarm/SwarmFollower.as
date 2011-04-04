@@ -4,8 +4,6 @@ package com.craigphares.experiments.swarm
 	{
 		public static const MIN_ROTATION:Number = 0;
 		public static const MAX_ROTATION:Number = 10;
-		public static const MIN_SPEED:Number = 1;
-		public static const MAX_SPEED:Number = 3;
 		
 		public static const NOISE:Number = 180;
 		
@@ -14,7 +12,7 @@ package com.craigphares.experiments.swarm
 		public function SwarmFollower()
 		{
 			super();
-			speed = MIN_SPEED + (Math.random() * (MAX_SPEED - MIN_SPEED));
+			speed = Defaults.DEFAULT_MIN_SPEED + (Math.random() * (Defaults.DEFAULT_MAX_SPEED - Defaults.DEFAULT_MIN_SPEED));
 			draw();
 		}
 		

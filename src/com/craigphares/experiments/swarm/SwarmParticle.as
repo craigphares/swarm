@@ -6,7 +6,6 @@ package com.craigphares.experiments.swarm
 
 	public class SwarmParticle
 	{
-		public static const DEFAULT_SPEED:Number = 1;
 		public static const DEFAULT_DIR:Number = 0;
 		public static const DEFAULT_COLOR:uint = 0xffffffff;
 		
@@ -25,7 +24,7 @@ package com.craigphares.experiments.swarm
 			pos = new Point();
 			tar = new Point();			
 			_dir = DEFAULT_DIR;
-			speed = DEFAULT_SPEED;			
+			speed = Defaults.DEFAULT_SPEED;			
 			color = DEFAULT_COLOR;
 		}
 		

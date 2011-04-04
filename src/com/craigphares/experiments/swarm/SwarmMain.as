@@ -9,11 +9,7 @@ package com.craigphares.experiments.swarm
 	import flash.utils.Timer;
 	
 	public class SwarmMain extends Sprite
-	{
-		public static const DEFAULT_WIDTH:Number = 640;
-		public static const DEFAULT_HEIGHT:Number = 480;
-		public static const NUM_FOLLOWERS:int = 42;
-		
+	{		
 		public var screenWidth:Number;
 		public var screenHeight:Number;
 		
@@ -23,13 +19,25 @@ package com.craigphares.experiments.swarm
 		
 		protected var timer:Timer;
 		
+		private var _swarmSize:int;
+		private var _wanderAngle_array:Array;
+		private var _wanderDistance_array:Array;
+		
 		public function SwarmMain()
 		{
 			super();
 			
 			// save the screen size
-			screenWidth = DEFAULT_WIDTH;
-			screenHeight = DEFAULT_HEIGHT;
+			screenWidth = Defaults.DEFAULT_WIDTH;
+			screenHeight = Defaults.DEFAULT_HEIGHT;
+
+			_swarmSize = Defaults.DEFAULT_SWARM_SIZE;
+			
+			wanderAngle = [Defaults.DEFAULT_WANDER_ANGLE_MIN, Defaults.DEFAULT_WANDER_ANGLE_MAX];
+			wanderDistance = [Defaults.DEFAULT_WANDER_DISTANCE_MIN, Defaults.DEFAULT_WANDER_DISTANCE_MAX];
+			
+
+			followers = new Array();
 
 			// create the screen
 			screen = new Bitmap();
@@ -43,6 +51,27 @@ package com.craigphares.experiments.swarm
 			trace('swarm initiated');
 		}
 		
+		[Bindable]
+		public function get swarmSize():int { return _swarmSize; }
+		public function set swarmSize(value:int):void {
+			_swarmSize = value;
+			spawnFollowers();
+		}
+		
+		[Bindable]
+		public function get wanderAngle():Array { return _wanderAngle_array; }
+		public function set wanderAngle(value:Array):void {
+			_wanderAngle_array = value;
+			if (leader != null) leader.wanderAngle = wanderAngle;
+		}
+		
+		[Bindable]
+		public function get wanderDistance():Array { return _wanderDistance_array; }
+		public function set wanderDistance(value:Array):void {
+			_wanderDistance_array = value;
+			if (leader != null) leader.wanderDistance = wanderDistance;
+		}
+		
 		public function spawnLeader():void
 		{
 			var px:Number = Math.random() * screenWidth;
@@ -52,21 +81,29 @@ package com.craigphares.experiments.swarm
 			
 			leader = new SwarmLeader();
 			leader.spawn(px, py);
+			leader.wanderAngle = wanderAngle;
+			leader.wanderDistance = wanderDistance;
 		}
 		
 		public function spawnFollowers():void
 		{
-			followers = new Array();
-			for (var i:int = 0; i < NUM_FOLLOWERS; i++) {
-				
-				var px:Number = Math.random() * screenWidth;
-				var py:Number = Math.random() * screenHeight;
-
-				var follower:SwarmFollower = new SwarmFollower();
-				follower.spawn(px, py, leader);
-				
-				followers.push(follower);
+			var followersNeeded:int = swarmSize - followers.length;
+			
+			trace('followersNeeded: ' + followersNeeded);
+			
+			if (followersNeeded == 0) return;
+			else if (followersNeeded > 0) {
+				for (var i:int = 0; i < followersNeeded; i++) {					
+					var px:Number = Math.random() * screenWidth;
+					var py:Number = Math.random() * screenHeight;					
+					var follower:SwarmFollower = new SwarmFollower();
+					follower.spawn(px, py, leader);					
+					followers.push(follower);					
+				}
+			} else {
+				followers = followers.slice(0, swarmSize);
 			}
+			
 		}
 		
 		public function step():void
@@ -81,11 +118,15 @@ package com.craigphares.experiments.swarm
 			if (leader.pos.x < 0 || leader.pos.x > screenWidth) {
 				//if (leader.pos.x < 0) leader.pos.x = 0;
 				//if (leader.pos.x > screenWidth) leader.pos.x = screenWidth;
+				if (leader.pos.x < 0) leader.pos.x = 0;
+				if (leader.pos.x > screenWidth) leader.pos.x = screenWidth;
 				leader.reflectHorizontal();
 			}
 			if (leader.pos.y < 0 || leader.pos.y > screenHeight) {
 				//if (leader.pos.y < 0) leader.pos.y = 0;
 				//if (leader.pos.y > screenHeight) leader.pos.y = screenHeight;
+				if (leader.pos.y < 0) leader.pos.y = 0;
+				if (leader.pos.y > screenHeight) leader.pos.y = screenHeight;
 				leader.reflectVertical();
 			}
 			

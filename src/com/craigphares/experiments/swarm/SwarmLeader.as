@@ -2,17 +2,26 @@ package com.craigphares.experiments.swarm
 {
 	public class SwarmLeader extends SwarmParticle
 	{
-		public static const DIR_VARIATION_MIN:Number	= -5;
-		public static const DIR_VARIATION_MAX:Number	= 5;
-		public static const DIST_VARIATION_MIN:Number	= 1;	
-		public static const DIST_VARIATION_MAX:Number	= 10;
+		private var _wanderAngle_array:Array;
+		private var _wanderDistance_array:Array;
 
 		public function SwarmLeader()
 		{
 			super();
 			color = 0xffff0000;
-			speed = 3;
+			wanderAngle = [Defaults.DEFAULT_WANDER_ANGLE_MIN, Defaults.DEFAULT_WANDER_ANGLE_MAX];
+			wanderDistance = [Defaults.DEFAULT_WANDER_DISTANCE_MIN, Defaults.DEFAULT_WANDER_DISTANCE_MAX];
 			draw();
+		}
+		
+		public function get wanderAngle():Array { return _wanderAngle_array; }
+		public function set wanderAngle(value:Array):void {
+			_wanderAngle_array = value;
+		}
+		
+		public function get wanderDistance():Array { return _wanderDistance_array; }
+		public function set wanderDistance(value:Array):void {
+			_wanderDistance_array = value;
 		}
 		
 		public function spawn(x:Number, y:Number):void
@@ -24,14 +33,14 @@ package com.craigphares.experiments.swarm
 		
 		public function findTarget():void
 		{
-			var dirOffset:Number = DIR_VARIATION_MIN + (Math.random() * (DIR_VARIATION_MAX - DIR_VARIATION_MIN));
+			var dirOffset:Number = wanderAngle[0] + (Math.random() * (wanderAngle[1] - wanderAngle[0]));
 			var newDir:Number = dir + dirOffset;
 			
 			if (newDir < 0) newDir += 360;
 			if (newDir > 360) newDir -= 360;
 			dir = newDir;
 			
-			var distance:Number = DIST_VARIATION_MIN + (Math.random() * (DIST_VARIATION_MAX - DIST_VARIATION_MIN));
+			var distance:Number = wanderDistance[0] + (Math.random() * (wanderDistance[1] - wanderDistance[0]));
 			var offsetX:Number = distance * Math.cos(dir * (Math.PI / 180));
 			var offsetY:Number = distance * Math.sin(dir * (Math.PI / 180));
 			

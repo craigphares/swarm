@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   minWidth="955" minHeight="600" 
-			   applicationComplete="onApplicationComplete(event)">
+			   applicationComplete="onApplicationComplete(event)" xmlns:utils="com.rad.utils.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -13,19 +13,48 @@
 			
 			import mx.events.FlexEvent;
 			
+			[Bindable]
 			public var swarm:SwarmMain;
 			
 			protected function onApplicationComplete(event:FlexEvent):void
 			{
 				swarm = new SwarmMain();
 				view.addChild(swarm);	
-			}			
+			}
+			
+			protected function onSwarmSizeEnter(event:FlexEvent):void
+			{
+				swarm.swarmSize = int(swarmSize_txt.text);
+			}
 		]]>
 	</fx:Script>
 	
-	<s:Group width="955" height="600">
+	<s:Group width="955" height="600" horizontalCenter="0" verticalCenter="0">
 		
-		<mx:UIComponent id="view" width="640" height="480" horizontalCenter="0" verticalCenter="0" />
+		<s:Rect left="0" top="0" right="0" bottom="0">
+			<s:fill>
+				<s:SolidColor color="#cccccc" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:VGroup width="315" height="100%">
+			
+			<utils:FPSComponent />
+			
+			<s:Label text="Swarm Size" />
+			<s:TextInput id="swarmSize_txt" text="{swarm.swarmSize}" enter="onSwarmSizeEnter(event)" />
+						
+			<s:Label text="Wander Angle" />
+			<mx:HSlider id="wanderAngle" thumbCount="2" values="{swarm.wanderAngle}" minimum="-90" maximum="90" />
+			
+			<s:Label text="Wander Distance" />
+			<mx:HSlider id="wanderDistance" thumbCount="2" values="{swarm.wanderDistance}" minimum="0" maximum="100" />
+			
+			
+			
+		</s:VGroup>
+		
+		<mx:UIComponent id="view" x="315" width="640" height="480" />
 		
 	</s:Group>
 	
