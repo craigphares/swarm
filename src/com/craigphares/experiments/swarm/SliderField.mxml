@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="change", type="flash.events.Event")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private var _label_str:String;
+			private var _value:Number;
+			private var _minimum:Number;
+			private var _maximum:Number;
+			
+			public function get label():String { return _label_str; }
+			public function set label(value:String):void {
+				_label_str = value;
+				label_txt.text = value;
+			}
+			
+			public function get value():Number { return _value; }
+			public function set value(value:Number):void {
+				_value = value;
+				value_txt.text = value.toString();
+				slider.value = value;
+			}
+			
+			public function get minimum():Number { return _minimum; }
+			public function set minimum(value:Number):void {
+				_minimum = value;
+				slider.minimum = value;
+			}
+			
+			public function get maximum():Number { return _maximum; }
+			public function set maximum(value:Number):void {
+				_maximum = value;
+				slider.maximum = value;
+			}
+			
+			protected function onValueEnter(event:FlexEvent):void
+			{
+				stage.focus = null;
+			}
+			
+			protected function onValueFocusOut(event:FocusEvent):void
+			{
+				var tempValue:Number = Number(value_txt.text);
+				if (tempValue > maximum) tempValue = maximum;
+				value = tempValue;
+				var changeEvent:Event = new Event(Event.CHANGE);
+				dispatchEvent(changeEvent);
+			}
+			
+			protected function onSliderChange(event:Event):void
+			{
+				value = slider.value;
+				var changeEvent:Event = new Event(Event.CHANGE);
+				dispatchEvent(changeEvent);
+			}
+
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label id="label_txt" width="80%" />
+		<s:TextInput id="value_txt" width="20%" restrict="0-9" enter="onValueEnter(event)" focusOut="onValueFocusOut(event)"  />
+	</s:HGroup>
+	<s:HSlider id="slider" change="onSliderChange(event)" width="100%" />
+</s:VGroup>

@@ -2,18 +2,29 @@ package com.craigphares.experiments.swarm
 {
 	public class SwarmFollower extends SwarmParticle
 	{
-		public static const MIN_ROTATION:Number = 0;
-		public static const MAX_ROTATION:Number = 10;
-		
 		public static const NOISE:Number = 180;
 		
 		public var leader:SwarmLeader;
+		public var _speedRange_array:Array;
+		public var _rotationRange_array:Array;
 		
 		public function SwarmFollower()
 		{
 			super();
-			speed = Defaults.DEFAULT_MIN_SPEED + (Math.random() * (Defaults.DEFAULT_MAX_SPEED - Defaults.DEFAULT_MIN_SPEED));
+			speedRange = [Defaults.DEFAULT_SPEED_MIN, Defaults.DEFAULT_SPEED_MAX];
+			rotationRange = [Defaults.DEFAULT_ROTATION_MIN, Defaults.DEFAULT_ROTATION_MAX];
 			draw();
+		}
+		
+		public function get speedRange():Array { return _speedRange_array; }
+		public function set speedRange(value:Array):void {
+			_speedRange_array = value;
+			speed = speedRange[0] + (Math.random() * (speedRange[1] - speedRange[0]));
+		}
+		
+		public function get rotationRange():Array { return _rotationRange_array; }
+		public function set rotationRange(value:Array):void {
+			_rotationRange_array = value;
 		}
 		
 		public function spawn(x:Number, y:Number, leader:SwarmLeader):void
@@ -39,44 +50,22 @@ package com.craigphares.experiments.swarm
 			if (targetDir < 0) targetDir += 360;
 			if (targetDir > 360) targetDir -= 360;
 			
-			//trace('target dir: ' + targetDir);
-
 			var dirDiff:Number = targetDir - dir;
 			if (dirDiff < -180) dirDiff += 360;
 			if (dirDiff > 180) dirDiff -= 360;
 			
-			//trace('diff: ' + dirDiff);
-			
-			var maxRotation:Number = MAX_ROTATION;
+			var maxRotation:Number = rotationRange[1];
 			if (Math.abs(dirDiff) < maxRotation) maxRotation = Math.abs(dirDiff);
 			
-			var turnAmount:Number = MIN_ROTATION + (Math.random() * (maxRotation - MIN_ROTATION));
-			//var turnAmount:Number = dirDiff * 0.3;
-			
-			//trace('turn: ' + turnAmount);
-			
-			/*
-			dir: 0-90
-			target: 
-			*/
-			
+			var turnAmount:Number = rotationRange[0] + (Math.random() * (maxRotation - rotationRange[0]));			
 			
 			var newDir:Number = dir;
 			if (dirDiff > 0) newDir += turnAmount;
 			else newDir -= turnAmount;
 			
-			
-			//var newDir:Number = dir + turnAmount;
-			
-			//newDir = targetDir;
-			
 			if (newDir < 0) newDir += 360;
 			if (newDir > 360) newDir -= 360;
 			dir = newDir;
-			
-			//trace('newDir: ' + newDir);
-			
-			//trace('----');
 			
 			// move particle
 			var vx:Number = speed * Math.cos(dir * (Math.PI / 180));

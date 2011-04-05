@@ -50,21 +50,17 @@ package com.craigphares.experiments.swarm
 		
 		public function reflectHorizontal():void
 		{
-			trace('reflectHorizontal: ' + pos.x + ' : ' + dir);
 			var vx:Number = speed * Math.cos(dir * (Math.PI / 180));
 			var vy:Number = speed * Math.sin(dir * (Math.PI / 180));
 			dir = Math.atan2(vy, -vx) * (180 / Math.PI);
-			trace('new dir: ' + dir);
 			findTarget();
 		}
 		
 		public function reflectVertical():void
 		{
-			trace('reflectVertical: ' + pos.y + ' : ' + dir);
 			var vx:Number = speed * Math.cos(dir * (Math.PI / 180));
 			var vy:Number = speed * Math.sin(dir * (Math.PI / 180));
 			dir = Math.atan2(-vy, vx) * (180 / Math.PI);
-			trace('new dir: ' + dir);
 			findTarget();
 		}
 		
