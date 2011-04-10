@@ -6,16 +6,28 @@ package com.craigphares.experiments.swarm
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	
 	public class SwarmMain extends Sprite
 	{		
+		/* new properties */
+		
+		public var targetPosition:Point;	// goal point
+		public var speed:Number;			// speed of travel
+		public var turnAmount:Number;		// percent of rotation towards goal
+		public var noise:Number;			// variation added to turns	
+		
+		/* existing properties */
+		
 		public var screenWidth:Number;
 		public var screenHeight:Number;
 		
 		public var screen:Bitmap;
 		public var leader:SwarmLeader;
 		public var followers:Array;
+		
+		public var simple:Array;
 		
 		protected var timer:Timer;
 		
@@ -32,6 +44,8 @@ package com.craigphares.experiments.swarm
 
 			followers = new Array();
 
+			simple = new Array();
+			
 			// save the screen size
 			screenWidth = Defaults.DEFAULT_WIDTH;
 			screenHeight = Defaults.DEFAULT_HEIGHT;
@@ -111,14 +125,28 @@ package com.craigphares.experiments.swarm
 		{
 			var px:Number = Math.random() * screenWidth;
 			var py:Number = Math.random() * screenHeight;
-			
+
+			var tx:Number = Math.random() * screenWidth;
+			var ty:Number = Math.random() * screenHeight;
+
 			trace('spawn leader at ' + px + ', ' + py);
 			
 			leader = new SwarmLeader();
 			leader.spawn(px, py);
 			leader.wanderAngle = wanderAngle;
 			leader.wanderDistance = wanderDistance;
-			leader.speed = wanderSpeed
+			leader.speed = wanderSpeed;			
+			
+			for (var i:int = 0; i < 42; i++) {
+				var simpleSwarmer:SimpleSwarmer = new SimpleSwarmer();
+				simpleSwarmer.pos = new Point(100, 100);
+				simpleSwarmer.targetPosition = new Point(tx, ty);
+				simpleSwarmer.speed = 10;
+				simpleSwarmer.turnAmount = 0.05;
+				simpleSwarmer.noise = 1.5;
+				simple.push(simpleSwarmer);
+			}
+			
 		}
 		
 		public function spawnFollowers():void
@@ -147,9 +175,16 @@ package com.craigphares.experiments.swarm
 		{
 			// draw background
 			var bmp:BitmapData = new BitmapData(screenWidth, screenHeight, false, 0x000000);
+			bmp.lock();
 			
 			// update leader
 			leader.move();
+			
+			for (var j:int = 0; j < simple.length; j++) {
+				simple[j].move();
+				bmp.copyPixels(simple[j].bmp, simple[j].bmp.rect, simple[j].pos, null, null, false);
+			}
+			
 			
 			// check leader boundaries
 			if (leader.pos.x < 0 || leader.pos.x > screenWidth) {
@@ -179,6 +214,7 @@ package com.craigphares.experiments.swarm
 				bmp.copyPixels(follower.bmp, follower.bmp.rect, follower.pos, null, null, false);
 			}
 			
+			bmp.unlock();
 			screen.bitmapData = bmp;
 			
 		}

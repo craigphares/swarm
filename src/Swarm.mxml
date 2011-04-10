@@ -85,11 +85,6 @@
 			
 			<utils:FPSComponent />
 			
-			<!--
-			<s:Label text="Swarm Size" />
-			<s:TextInput id="swarmSize_txt" enter="onSwarmSizeEnter(event)" />
-			-->
-			
 			<swarm:SliderField id="swarmSize" width="100%" label="Swarm Size" minimum="1" maximum="100" change="onSwarmSizeChange(event)" />
 				
 			<s:HGroup width="100%">
