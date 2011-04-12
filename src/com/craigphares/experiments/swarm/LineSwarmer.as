@@ -4,8 +4,9 @@ package com.craigphares.experiments.swarm
 
 	public class LineSwarmer extends SimpleSwarmer
 	{
-		public var numSegments:int = 10;	
-		public var segments:Array = new Array();
+		public var numVertices:int = 42;
+		public var numSegments:int = 7;
+		public var vertices:Array = new Array();
 		
 		public function LineSwarmer()
 		{
@@ -16,10 +17,10 @@ package com.craigphares.experiments.swarm
 		{
 			super.move();
 						
-			var actualSegments:int = segments.length;
+			var totalVertices:int = vertices.length;
 			
-			if (actualSegments >= numSegments) segments.shift();
-			segments.push(pos.clone());
+			if (totalVertices >= numVertices) vertices.shift();
+			vertices.push(pos.clone());
 			
 			
 			

@@ -2,7 +2,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   minWidth="955" minHeight="600" frameRate="30" 
+			   minWidth="955" minHeight="600" frameRate="60" 
 			   applicationComplete="onApplicationComplete(event)" 
 			   xmlns:utils="com.rad.utils.*" 
 			   xmlns:swarm="com.craigphares.experiments.swarm.*">
@@ -87,29 +87,33 @@
 			
 			<utils:FPSComponent />
 			
-			<swarm:SliderField id="swarmSize" width="100%" label="Swarm Size" minimum="1" maximum="100" change="onSwarmSizeChange(event)" />
+			<s:VGroup visible="false">
 				
-			<s:HGroup width="100%">
-				<swarm:SliderField id="wanderAngleMin" width="100%" label="Wander Angle Minimum" minimum="-90" maximum="0" change="onWanderAngleChange(event)" />
-				<swarm:SliderField id="wanderAngleMax" width="100%" label="Wander Angle Maximum" minimum="0" maximum="90" change="onWanderAngleChange(event)" />				
-			</s:HGroup>
-
-			<s:HGroup width="100%">
-				<swarm:SliderField id="wanderDistanceMin" width="100%" label="Wander Distance Minimum" minimum="0" maximum="480" change="onWanderDistanceChange(event)" />
-				<swarm:SliderField id="wanderDistanceMax" width="100%" label="Wander Distance Maximum" minimum="0" maximum="480" change="onWanderDistanceChange(event)" />				
-			</s:HGroup>
-
-			<swarm:SliderField id="wanderSpeed" width="100%" label="Wander Speed" minimum="0" maximum="480" change="onWanderSpeedChange(event)" />
-
-			<s:HGroup width="100%">
-				<swarm:SliderField id="swarmSpeedMin" width="100%" label="Swarm Speed Minimum" minimum="0" maximum="480" change="onSwarmSpeedChange(event)" />
-				<swarm:SliderField id="swarmSpeedMax" width="100%" label="Swarm Speed Maximum" minimum="0" maximum="480" change="onSwarmSpeedChange(event)" />				
-			</s:HGroup>
-
-			<s:HGroup width="100%">
-				<swarm:SliderField id="swarmRotationMin" width="100%" label="Swarm Rotation Minimum" minimum="-90" maximum="0" change="onSwarmRotationChange(event)" />
-				<swarm:SliderField id="swarmRotationMax" width="100%" label="Swarm Rotation Maximum" minimum="0" maximum="90" change="onSwarmRotationChange(event)" />				
-			</s:HGroup>
+				<swarm:SliderField id="swarmSize" width="100%" label="Swarm Size" minimum="1" maximum="100" change="onSwarmSizeChange(event)" />
+					
+				<s:HGroup width="100%">
+					<swarm:SliderField id="wanderAngleMin" width="100%" label="Wander Angle Minimum" minimum="-90" maximum="0" change="onWanderAngleChange(event)" />
+					<swarm:SliderField id="wanderAngleMax" width="100%" label="Wander Angle Maximum" minimum="0" maximum="90" change="onWanderAngleChange(event)" />				
+				</s:HGroup>
+	
+				<s:HGroup width="100%">
+					<swarm:SliderField id="wanderDistanceMin" width="100%" label="Wander Distance Minimum" minimum="0" maximum="480" change="onWanderDistanceChange(event)" />
+					<swarm:SliderField id="wanderDistanceMax" width="100%" label="Wander Distance Maximum" minimum="0" maximum="480" change="onWanderDistanceChange(event)" />				
+				</s:HGroup>
+	
+				<swarm:SliderField id="wanderSpeed" width="100%" label="Wander Speed" minimum="0" maximum="480" change="onWanderSpeedChange(event)" />
+	
+				<s:HGroup width="100%">
+					<swarm:SliderField id="swarmSpeedMin" width="100%" label="Swarm Speed Minimum" minimum="0" maximum="480" change="onSwarmSpeedChange(event)" />
+					<swarm:SliderField id="swarmSpeedMax" width="100%" label="Swarm Speed Maximum" minimum="0" maximum="480" change="onSwarmSpeedChange(event)" />				
+				</s:HGroup>
+	
+				<s:HGroup width="100%">
+					<swarm:SliderField id="swarmRotationMin" width="100%" label="Swarm Rotation Minimum" minimum="-90" maximum="0" change="onSwarmRotationChange(event)" />
+					<swarm:SliderField id="swarmRotationMax" width="100%" label="Swarm Rotation Maximum" minimum="0" maximum="90" change="onSwarmRotationChange(event)" />				
+				</s:HGroup>
+				
+			</s:VGroup>
 			
 		</s:VGroup>
 		

@@ -134,17 +134,20 @@ package com.craigphares.experiments.swarm
 			for (var i:int = 0; i < swarmMembers; i++) {
 				var swarmMember:LineSwarmer = swarm[i];
 				var bmpPos:Point = new Point(swarmMember.pos.x - (swarmMember.width / 2), swarmMember.pos.y - (swarmMember.height / 2));
-				display.backBuffer.copyPixels(swarmMember.bmp, swarmMember.bmp.rect, bmpPos, null, null, true);
+				//display.backBuffer.copyPixels(swarmMember.bmp, swarmMember.bmp.rect, bmpPos, null, null, true);
 				
 				var sprite:Sprite = new Sprite();
-				var numSegments:int = swarmMember.segments.length;
-				var pos:Point = swarmMember.segments[numSegments - 1];
-				sprite.graphics.moveTo(pos.x, pos.y);
-				for (var j:int = numSegments - 2; j >= 0; j--) {
-					var seg:Point = swarmMember.segments[j];
-					var alpha:Number = j / numSegments;
-					sprite.graphics.lineStyle(1, 0xff0000, alpha);
-					sprite.graphics.lineTo(seg.x, seg.y);
+				var numVertices:int = swarmMember.vertices.length;
+				var start:Point = swarmMember.vertices[numVertices - 1];
+				sprite.graphics.moveTo(start.x, start.y);
+				var iterations:int = (numVertices - 1) / swarmMember.numSegments;
+				if (iterations > 0) {
+					for (var j:int = numVertices - 1 - iterations; j >= 0; j-=iterations) {
+						var vert:Point = swarmMember.vertices[j];
+						var alpha:Number = j / numVertices;
+						sprite.graphics.lineStyle(1, 0xff0000, alpha);
+						sprite.graphics.lineTo(vert.x, vert.y);
+					}
 				}
 				display.backBuffer.draw(sprite);
 				
