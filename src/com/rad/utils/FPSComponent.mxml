@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 enterFrame="onEnterFrame(event)">
@@ -8,20 +8,46 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			public static const DEFAULT_FPS:int = 60;
 			
 	        public var fps:int;
 
 	        protected var time:int;
-	        protected var prevTime:int = 0;
-
+	        protected var prevTime:int = getTimer();
+			
+			[Bindable]
+			protected var bmp:BitmapData = new BitmapData(91, 33, false, 0xff000000);
+			
+			protected var fps_array:Array = new Array(23);
+			
 			protected function onEnterFrame(event:Event):void
 			{
 	            time = getTimer();
 	            fps = 1000 / (time - prevTime);
 	            label_txt.text = 'FPS: ' + fps.toString();
-	            prevTime = getTimer();
+	
+				fps_array.shift();
+				fps_array.push(fps);
+	
+				bmp.fillRect(bmp.rect, 0xff000000);	
+				var total:int = 0;
+				for (var i:int = 0; i < 23; i++) {
+					var currentFPS:int = fps_array[i];
+					var barHeight:int = (currentFPS / DEFAULT_FPS) * 32;
+					var rect:Rectangle = new Rectangle((i * 4) - 1, 32 - barHeight, 3, barHeight);
+					bmp.fillRect(rect, 0xff00ff00);
+					total += currentFPS;
+				}
+				
+				var avg:int = total / 23;
+				avg_txt.text = 'AVG: ' + avg.toString();
+				
+				prevTime = getTimer();
+	
 			}
 		]]>
 	</fx:Script>
 	<s:Label id="label_txt" />
-</s:Group>
+	<s:BitmapImage id="graph" source="{bmp}" width="91" height="33" />
+	<s:Label id="avg_txt" />
+</s:VGroup>

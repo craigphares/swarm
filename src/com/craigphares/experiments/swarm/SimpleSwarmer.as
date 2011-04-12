@@ -35,24 +35,17 @@ package com.craigphares.experiments.swarm
 			
 			//bmp = new BitmapData(width, height);
 			
-			src = new BitmapData(7, 7, true, 0x00000000);
-			
-			src.setPixel32(6, 3, 0xff00ff00);
-			
+			src = new BitmapData(7, 7, true, 0x00000000);			
+			src.setPixel32(6, 3, 0xff00ff00);			
 			src.setPixel32(5, 2, 0xff00ff00);
 			src.setPixel32(5, 3, 0xff00ff00);
-			src.setPixel32(5, 4, 0xff00ff00);
-			
+			src.setPixel32(5, 4, 0xff00ff00);			
 			src.setPixel32(4, 1, 0xff00ff00);
 			src.setPixel32(4, 3, 0xff00ff00);			
-			src.setPixel32(4, 5, 0xff00ff00);
-			
-			src.setPixel32(3, 3, 0xff00ff00);
-			
-			src.setPixel32(2, 3, 0xff00ff00);
-			
-			src.setPixel32(1, 3, 0xff00ff00);
-			
+			src.setPixel32(4, 5, 0xff00ff00);			
+			src.setPixel32(3, 3, 0xff00ff00);			
+			src.setPixel32(2, 3, 0xff00ff00);			
+			src.setPixel32(1, 3, 0xff00ff00);			
 			src.setPixel32(0, 3, 0xff00ff00);
 			
 			width = 7;
@@ -72,8 +65,6 @@ package com.craigphares.experiments.swarm
 			dir += deltaAngle * turnAmount + ((Math.random() * noise * 2) - noise);
 			pos.x += Math.cos(dir * D2R) * speed;
 			pos.y += Math.sin(dir * D2R) * speed;
-			
-			trace('pos: ' + pos);
 			
 			// rotate the bitmap
 			var rotateMatrix:Matrix = new Matrix();
