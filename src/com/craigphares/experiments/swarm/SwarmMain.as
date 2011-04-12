@@ -97,7 +97,7 @@ package com.craigphares.experiments.swarm
 			var ty:Number = Math.random() * screenHeight;
 
 			for (var i:int = 0; i < 42; i++) {
-				var simpleSwarmer:SimpleSwarmer = new SimpleSwarmer();
+				var simpleSwarmer:LineSwarmer = new LineSwarmer();
 				simpleSwarmer.pos = new Point(100, 100);
 				simpleSwarmer.targetPosition = new Point(tx, ty);
 				simpleSwarmer.speed = 10;
@@ -110,8 +110,19 @@ package com.craigphares.experiments.swarm
 		
 		override public function main():void
 		{
+			var targetPoint:Point;
+			
+			// determine new target goal
+			if (Math.random() > 0.8) {
+				var tx:Number = Math.random() * screenWidth;
+				var ty:Number = Math.random() * screenHeight;
+				targetPoint = new Point(tx, ty);
+			}
+			
+			// move swarm
 			var swarmMembers:int = swarm.length;
 			for (var i:int = 0; i < swarmMembers; i++) {
+				if (targetPoint != null) swarm[i].targetPosition = targetPoint;
 				swarm[i].move();
 			}
 		}
@@ -121,8 +132,22 @@ package com.craigphares.experiments.swarm
 			// draw leader
 			var swarmMembers:int = swarm.length;
 			for (var i:int = 0; i < swarmMembers; i++) {
-				var swarmMember:SimpleSwarmer = swarm[i];
-				display.backBuffer.copyPixels(swarmMember.bmp, swarmMember.bmp.rect, swarmMember.pos, null, null, true);
+				var swarmMember:LineSwarmer = swarm[i];
+				var bmpPos:Point = new Point(swarmMember.pos.x - (swarmMember.width / 2), swarmMember.pos.y - (swarmMember.height / 2));
+				display.backBuffer.copyPixels(swarmMember.bmp, swarmMember.bmp.rect, bmpPos, null, null, true);
+				
+				var sprite:Sprite = new Sprite();
+				var numSegments:int = swarmMember.segments.length;
+				var pos:Point = swarmMember.segments[numSegments - 1];
+				sprite.graphics.moveTo(pos.x, pos.y);
+				for (var j:int = numSegments - 2; j >= 0; j--) {
+					var seg:Point = swarmMember.segments[j];
+					var alpha:Number = j / numSegments;
+					sprite.graphics.lineStyle(1, 0xff0000, alpha);
+					sprite.graphics.lineTo(seg.x, seg.y);
+				}
+				display.backBuffer.draw(sprite);
+				
 			}
 		}
 		
